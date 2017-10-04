@@ -13,20 +13,13 @@
 
 //********************************** /Task End ***********************************/
 
+const fetcher = require('./fetcherCore');
 
-var srequest = require('node-modules');
+const StartDate = '2017-09-10';
+const EndDate = '2017-09-15';
 
-const StartDate = '2017-09-01',
-    EndDate = '2017-09-05';
+const datesArray = fetcher.getCurrencyByDates(StartDate, EndDate);
+console.log(`Dates Array: [${datesArray}]`, "\n Days array length: " + datesArray.length);
 
-const getCurrencyByDates = (startDate, endDate) => {
-    const listDate = [];
-    let dateMove = new Date(startDate);
-    let strDate = startDate;
-    while (strDate < endDate) {
-        strDate = dateMove.toISOString().slice(0, 10);
-        listDate.push(strDate);
-        dateMove.setDate(dateMove.getDate() + 1);
-    };
-    return listDate;
-}
+const urls = datesArray.map(fetcher.datesToRequestURLs);
+console.log(urls);
