@@ -1,0 +1,140 @@
+//********************************** /Task1***********************************/
+
+const fetcher = require('./fetcherCore');
+
+const startdate = '2017-09-20';
+const enddate = '2017-09-25';
+
+/*
+// fetching data from other file 
+const datesArray = fetcher.getCurrencyByDates(startdate, enddate);
+console.log(`Dates Array: [${datesArray}]`, "\n Days array length: " + datesArray.length);
+// fetching URLs and mapping to an array
+const urls = datesArray.map(fetcher.datesToRequestURLs);
+console.log(urls);
+
+const promises = fetcher.GetUrlByDatepromises(urls)
+//console.log(promises);
+// fetching data from promises and printing result
+  fetcher.getPromiseResult(promises)
+    .then(result => console.log("The result is: " + result))
+    .catch(err => console.error("The error is" + err));*/
+
+// after combining all functions displaying result
+fetcher(startdate, enddate)
+    .then(result => console.log("The result is: " + result))
+    .catch(err => console.error("The error is" + err));
+
+// console.log(fetcher.finalGetCurrencyByDates(startdate, enddate));
+
+
+//********************************** /Task2***********************************/
+const fetcher = require('./fetcherCore');
+
+const fs = require("fs");
+
+const startdate = '2017-09-20';
+const enddate = '2017-09-25';
+
+const UrlResult = fetcher(startdate, enddate)
+    .then(result => {
+        console.log("The result is: " + result);
+        return result;
+    })
+    .catch(err => console.error("The error is" + err))
+    .then(result => fs.writeFileSync('output.json', result, 'utf8'))
+
+    
+/*const datesArray = fetcher.getCurrencyByDates(startdate, enddate);
+console.log(`Dates Array: [${datesArray}]`, "\n Days array length: " + datesArray.length);
+const urls = datesArray.map(fetcher.datesToRequestURLs);
+const promises = fetcher.GetUrlByDatepromises(urls)
+fetcher.getPromiseResult(promises)
+    .then(result => console.log("The result is: " + result))
+    .catch(err => console.error("The error is" + err));*/
+
+//********************************** /Task3***********************************/
+//1) output is currently presented as
+{ "base":"EUR", "date":"2017-09-20", "rates":{ "USD":1.2007 } }
+//(array.map)
+// Let's change it to (for each entry in the array)
+{ "date": "2017-09-20", "rate": 1.2007 };
+//2) There should not be any repeating dates & rates
+// (array.filter)
+
+//********************************** /Task***********************************/
+//********************************** /Task***********************************/
+//********************************** /Task***********************************/
+
+const request = require('request');
+
+// Pure module
+// Taking date outputs and store it to an array
+const getCurrencyByDates = (startdate, enddate) => {
+    const listdate = [];
+    let datemove = new Date(startdate);
+    let strdate = startdate;
+    while (strdate < enddate) {
+        strdate = datemove.toISOString().slice(0, 10);
+        listdate.push(strdate);
+        datemove.setDate(datemove.getDate() + 1);
+    };
+    return listdate;
+}
+//datesArray = getCurrencyByDates(startdate, enddate);
+
+// Getting array of date and adding it to URL
+const datesToRequestURLs = arrayOfDates => {
+    const requestURLs = [];
+    for (let i = 0; i < arrayOfDates.length; i++) {
+        const uri = `http://api.fixer.io/${arrayOfDates[i]}?symbols=EUR,USD`;
+        requestURLs.push(uri);
+    }
+    return requestURLs;
+}
+
+// Storing URL into an array
+// [urls] -> [Promises]
+const GetUrlByDatepromises = (datesToRequestURLs) =>
+    datesToRequestURLs.map(url =>
+        new Promise((resolve, reject) =>
+            request(url, (err, res, body) => {
+                if (err) {
+                    reject(err);
+                }
+                else {
+                    resolve(body);
+                }
+            })
+        )
+    );
+
+const getPromiseResult = promisesArray =>
+    Promise.all(promisesArray)
+
+// Compose multiple functions
+// const func1 = a => b;
+// const func2 = b => c;
+
+// const composedFunc = (a) => {
+//     return func2(func1(a));
+// }
+
+// Compose functions 
+const finalGetCurrencyByDates = (startdate, enddate) =>
+    getPromiseResult(GetUrlByDatepromises(datesToRequestURLs(getCurrencyByDates(startdate, enddate))));
+
+// combining and exporting result
+module.exports =
+    finalGetCurrencyByDates
+
+/*
+module.exports = {
+    getCurrencyByDates: getCurrencyByDates,
+    datesToRequestURLs: datesToRequestURLs,
+    GetUrlByDatepromises: GetUrlByDatepromises,
+    getPromiseResult: getPromiseResult
+}
+*/
+
+
