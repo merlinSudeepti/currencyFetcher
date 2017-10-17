@@ -1,0 +1,38 @@
+typescript in visual studio
+tsc /w --> It keeps executing
+
+In terminal:
+
+$ tsc --version
+Version 2.5.3
+
+$ ls
+app.ts  jsScripts/  tsconfig.json
+
+$ tsc app.ts
+
+$ tsc app.ts --target ES6
+
+$ tsc app.ts
+
+$ tsc
+
+$ cd jsScripts/
+
+$ node app.js
+{ x: 5, y: 10, z: 15 }
+
+$ node app.js
+750
+
+$ node app.js
+750
+3 seconds passed
+
+$ node app.js
+750
+Started
+stuff
+
+
+
