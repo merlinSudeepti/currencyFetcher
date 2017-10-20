@@ -1,0 +1,71 @@
+interface vec3 {
+    x: number
+    y: number
+    z: number
+}
+
+// x * y * z
+const vecProduct = ({ x, y, z }: vec3) =>
+    x * y * z
+
+console.log(vecProduct({
+    x: 5,
+    y: 10,
+    z: 15
+}));
+
+// setTimeout(() => console.log("3 seconds passed"), 3000);
+
+
+const getMessage = () => new Promise<string>(resolve =>
+    setTimeout(() => resolve("3 seconds passed"), 3000)
+)
+// "Old way":
+// getMessage().then(console.log);
+
+
+// async / await
+// "New way":
+
+const main = async (functionToWait: () => Promise<string>) => {
+    console.log("Started");
+    const result = await functionToWait();
+    console.log(result);
+
+    // Same as:
+    //let result2: string
+    //functionToWait().then( str => { result2 = str });
+
+    return 5;
+}
+
+
+// Algebraic data types
+// Union types
+
+class Thing {
+    value: number = 5
+}
+
+class Stuff {
+    prop: string = "whatever"
+}
+
+let str: Thing | Stuff;
+
+/// a lot of code
+
+if (str instanceof Thing)
+    console.log(str.value);
+
+// Polymorphic functions / templates / generics
+const format = <T>(value: T) =>
+    "Formatted value: " + value;
+
+// tuple
+
+const makeTuple = <T, Q>(a: T, b: Q) => 
+    [a, b]
+
+
+const result = makeTuple(5, "whatever");
