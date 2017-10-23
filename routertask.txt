@@ -1,0 +1,8 @@
+
+
+// Make a node web server
+// With express, use a router to create a single route /whatever
+// When user opens this route, use callbacks to wait 2 seconds and then return a string/message to the user "I am loaded"
+// use this link https://expressjs.com/en/starter/hello-world.html
+
+// $ npm install express
