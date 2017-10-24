@@ -1,0 +1,39 @@
+const express = require('express');
+
+const app = express();
+app.get('/', function (req, res) {
+    setTimeout(() => {
+        res.send("Hello! Wait 5 seconds");
+    }, 5000);
+});
+//console.log("I am loaded"), 2000);
+//res.send('Hello!');
+//setTimeout(() => console.log("I am loaded"), 2000);
+
+app.listen(3000, function () {
+    console.log("Listening on port 3000");
+});
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const express = require('express');
+
+const getMessage = timeToWait =>
+    new Promise(resolve =>
+        setTimeout(() => resolve(Math.random() * 9000), timeToWait)
+    );
+
+const app = express();
+app.get('/', (req, res) =>
+    getMessage(1000).then(str => res.json(str))
+);
+
+
+// Use express router
+// move from promises to async/await
+
+app.listen(3000, function () {
+    console.log("Listening on port 3000");
+})
+
+//const waht = [1, 2, 5, 4]
+//( waht[3] > 5 ? console.log : console.error )(waht)
